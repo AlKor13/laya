@@ -170,7 +170,7 @@ jobs:
         run: python tests/test_evals_api.py
 
       - name: Fixture dataset validates
-        run: laya-eval validate research/evals/fixture.jsonl
+        run: laya-evals validate research/evals/fixture.jsonl
 
   # Every workflow in this repo ran on ubuntu-latest only, so a test that fails off Linux was
   # invisible until a user hit it -- which is what happened to tests/test_download.py (#140).
