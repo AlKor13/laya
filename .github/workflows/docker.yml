@@ -34,6 +34,9 @@ jobs:
           print(torch.__version__, cusparselt.version())
           '
           docker run --rm --network none laya:spark pip check
+      # torch 2.14 compiles Triton kernels on the first CUDA inference unless this is set (#365).
+      - name: A CUDA image must keep torch's native Triton JIT off
+        run: docker run --rm --network none laya:spark sh -c 'test "$TORCH_DISABLE_NATIVE_JIT" = 1'
 
   smoke:
     # Native runners for both architectures; torch wheels install for the target, so
