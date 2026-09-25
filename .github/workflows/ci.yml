@@ -55,6 +55,9 @@ jobs:
           python-version: "3.11"
       - run: python research/benchmarks/feishu_zh/audit.py
       - run: python -m unittest discover -s research/benchmarks/feishu_zh/tests -v
+      # This job installs nothing, so running the audit here is what proves it needs
+      # nothing but the standard library. Its test suite imports numpy and runs in `test`.
+      - run: python research/benchmarks/zh_short_commands/audit.py
 
   test:
     name: tests (py${{ matrix.python }})
@@ -126,6 +129,11 @@ jobs:
 
       - name: Email cleaning tests
         run: python tests/test_email.py
+      # Full dependency tree here, so the stub pipeline and the metric pins that need numpy
+      # run instead of skipping. The audit itself runs in `feishu-benchmark`, where nothing
+      # is installed.
+      - name: Chinese short-command benchmark tests
+        run: python -m unittest discover -s research/benchmarks/zh_short_commands/tests -v
 
       # These four are pytest suites, and `python tests/<name>.py` does not run them: it defines
       # the test functions and exits 0, having asserted nothing. They were counted by the suite
